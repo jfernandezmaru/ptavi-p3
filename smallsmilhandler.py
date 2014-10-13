@@ -6,11 +6,10 @@ from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 
 class SmallSMILHandler(ContentHandler):
-
     """
     Clase para manejar chistes malos
     """
-    def __init__ (self):
+    def __init__ (self,lista):
         """
         Constructor. Inicializamos las variables
         """
@@ -27,9 +26,7 @@ class SmallSMILHandler(ContentHandler):
         self.begin = ""
         self.dur = "0s"
         self.end = "0s"
-        
         self.fill = ""
-        
         self.etiquetas = {
             "root-layout": ["width", "height", "background-color"],
             "region": ["id", "top", "bottom", "left", "right" ],
@@ -37,7 +34,7 @@ class SmallSMILHandler(ContentHandler):
             "audio" : ["src", "begin", "dur"],
             "textstream" : ["src", "region", "fill"] }
         
-        self.lista = []
+        self.lista = lista
 
     def startElement(self, name, attrs):
         """
@@ -51,16 +48,17 @@ class SmallSMILHandler(ContentHandler):
             self.lista.append(dic)
 
     def get_tags(self):
-
+    
         return self.lista 
 
 if __name__ == "__main__":
-
     """
     Programa principal
     """
+    lista= []
     parser = make_parser()
-    cHandler = SmallSMILHandler()
+    cHandler = SmallSMILHandler(lista)
     parser.setContentHandler(cHandler)
     parser.parse(open('karaoke.smil'))
-    print cHandler.get_tags()
+    #print cHandler.get_tags()
+
